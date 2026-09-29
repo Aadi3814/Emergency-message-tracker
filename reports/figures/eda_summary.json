@@ -1,0 +1,23 @@
+{
+  "total_messages": 76484,
+  "split_counts": {
+    "train": 53531,
+    "validation": 7793,
+    "test": 15160
+  },
+  "num_classes": 4,
+  "class_distribution": {
+    "Not Relevant": 32765,
+    "Rescue Request": 28253,
+    "Infrastructure Damage": 8163,
+    "Casualties / Injuries": 7303
+  },
+  "missing_text": 0,
+  "duplicate_messages": 6,
+  "message_length": {
+    "avg_words": 21.64185973536949,
+    "median_words": 19.0,
+    "max_words": 139,
+    "avg_chars": 130.81410491083102
+  }
+}

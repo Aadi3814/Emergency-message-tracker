@@ -1,0 +1,73 @@
+# Emergency Message Prioritizer Configuration
+
+project:
+  name: "Emergency Message Prioritizer"
+  version: "1.0.0"
+  random_seed: 42
+
+dataset:
+  hf_dataset_name: "QCRI/HumAID-all"
+  text_column: "tweet_text"
+  label_column: "class_label"
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  
+  # Target 4 categories required by user specs
+  target_categories:
+    - "Rescue Request"
+    - "Infrastructure Damage"
+    - "Casualties / Injuries"
+    - "Not Relevant"
+    
+  # Mapping from HumAID 10 categories to 4 target categories
+  label_mapping:
+    requests_or_urgent_needs: "Rescue Request"
+    rescue_volunteering_or_donation_effort: "Rescue Request"
+    missing_or_found_people: "Rescue Request"
+    displaced_people_and_evacuations: "Rescue Request"
+    infrastructure_and_utility_damage: "Infrastructure Damage"
+    injured_or_dead_people: "Casualties / Injuries"
+    not_humanitarian: "Not Relevant"
+    other_relevant_information: "Not Relevant"
+    sympathy_and_support: "Not Relevant"
+    caution_and_advice: "Not Relevant"
+
+priority:
+  policy_name: "Academic Emergency Response Policy"
+  mapping:
+    "Rescue Request": "CRITICAL"
+    "Casualties / Injuries": "CRITICAL"
+    "Infrastructure Damage": "HIGH"
+    "Not Relevant": "LOW"
+  
+  default_confidence_threshold: 0.60
+  review_status_high_conf: "Model Prediction"
+  review_status_low_conf: "Human Review Recommended"
+
+preprocessing:
+  remove_urls: true
+  remove_mentions: true
+  clean_html: true
+  lower_case: true
+  preserve_urgency_punctuation: true
+
+baseline_model:
+  model_path: "models/tfidf_logistic_regression.pkl"
+  label_encoder_path: "models/label_encoder.pkl"
+  max_features: 10000
+  ngram_range: [1, 2]
+  sublinear_tf: true
+  c_param: 1.0
+  max_iter: 1000
+
+transformer_model:
+  model_name: "distilbert-base-uncased"
+  save_dir: "models/distilbert_model"
+  max_length: 128
+  batch_size: 16
+  epochs: 2
+  learning_rate: 2e-5
+
+reports:
+  figures_dir: "reports/figures"
+  results_json: "reports/evaluation_results.json"
